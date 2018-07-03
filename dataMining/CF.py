@@ -1,6 +1,8 @@
 from math import sqrt
 
 class CF:
+
+	getSimMartrix = False
 	# data：数据集，为一个字典，第一个key是用户id；value又是一个字典，其key为商品id，value为评分
 	# k：表示得出最相近的近邻数
 	# metric：表示使用计算相似度的方法
@@ -161,6 +163,11 @@ class CF:
 		if way == 'user':
 			return self.getRecommendationsByUser(self.data, userId)
 		elif way == 'item':
-			return self.getRecommendationsByItem(self.data, self.calculateItemsSimMatrix(), userId)
+			if self.getSimMartrix == False:
+				self.itemSimMartrix = self.calculateItemsSimMatrix()
+				self.getSimMartrix = True
+				return self.getRecommendationsByItem(self.data, self.itemSimMartrix, userId)
+			else:
+				return self.getRecommendationsByItem(self.data, self.itemSimMartrix, userId)
 		else:
 			return
